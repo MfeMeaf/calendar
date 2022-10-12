@@ -1,0 +1,43 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family:monospace !important;
+}    
+body{
+    color: green;
+    background: black;
+    text-align: center;
+}  
+a{
+    text-decoration: none;
+    color: green;
+    font-size: 20px; 
+} 
+a:hover{
+    color: goldenrod;
+}
+ul{
+    float: left;
+}
+li{
+    border: 3px ridge hsl(240, 72%, 40%);
+    color: green;
+    position:relative;
+    display: inline-block;
+}
+.dag{
+    width: 55px;
+    height: 55px;
+    background: whitesmoke;
+}
+.week{
+    color: goldenrod;
+}
+.weekend{
+    background-color: red;
+    color: white;
+}
+.today{
+    background: hsl(240, 72%, 65%);
+    color: white;
+}
