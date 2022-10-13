@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="sv">
+    <head>
+	<meta charset="UTF-8">
+	<title>PHP Date</title>
+    <link rel="stylesheet" href="css/cal.css">
+    </head>
+    <body>
+    <h1>Calendar</h1>    
+    <br>
+    <table>
+    <?php
+        include("namnsdag.php");
+        // include("bday.txt");
+        // $bday = explode(",", include("bday.txt"));
+        // $bdayDate = explode(".",$bday[1]);
+        // echo ("<p>$bdayDate</p>");
+        $today = date("d");
+            $date = $_GET['date'];
+            $month = (explode('-', $date)[1]) ?? date('m');
+            $year = (explode('-', $date)[0]) ?? date('Y');
+            $nextMonth = date('Y-m-d', strtotime('+1 month'));
+            $ymd = strtotime("$year"."-"."$month"."-"."$i");
+
+            $i = 1;    
+
+            $timestamp = ("$i/$month/$year");
+            $currentYear = "$year-$month-$today";
+            $dayAmount = date("t", strtotime($currentYear));
+
+            echo "<a class='month' href='?date=".date("Y-m", strtotime($currentYear.' +1 month'))."'>Next month</a><br>";
+            echo "<a class='month' href='?date=".date("Y-m", strtotime($currentYear.' -1 month'))."'>Last month</a>";
+
+        function printDay($i, $dayAmount, $year, $month, $_month, $today, $dayYear, $namnsdag){
+            echo "<h1>".date('Y M',strtotime($year.'-'.$month.'-1'))."</h1>";
+            echo "<img src='images/$month.png' alt='bild på månad'>";
+            while($i<= ((int)$dayAmount)){
+                $currentYear2 = "$year-$month-$i";
+                // Gets the day of a specific date and implodes the name day for that day - It justs works
+                $dayYear = date("z", strtotime($currentYear2));
+                // $_namnsdag is for the actuall name/s and namnsdag is for the array of names
+                $_namnsdag = implode(" ",$namnsdag[(int)$dayYear]);
+
+                $weeknum = $dayYear/7;
+                $weekCeil = ceil($weeknum);
+
+                $openBday = fopen("bday.txt","r") or die("Failed to open file");
+                $bday = "";
+    
+                if($bdayArr = fgets($openBday)){
+                    $temp = explode(",", $bdayArr);
+                    for($x = 0; $x <= count($temp); $x++){
+                        $temp2 = explode(".", $temp[$x]);
+                        $temp3 = explode("-", $temp2[1]);
+                        $temp4 = $temp3[1]."-".$temp3[2];
+                        if($temp4==("$month-$i")){
+                            $bday = "🎂$temp2[0]🎂";
+                        }
+                    }
+                }
+                if(date("D", strtotime("$year-$month-$i")) == "Sun")
+                    echo "<td><p class='dag weekend'>".date("D", strtotime("$year-$month-$i")).date("$i")." <span class='namnsdag'>$_namnsdag<span class='bday'>$bday</span></span></p></td></tr>";
+
+                else if(date("D", strtotime("$year-$month-$i")) == "Mon")
+                    echo "<tr><td><p class='dag weekday week'>"."week: ".date("W", strtotime($year.'-'.$month.'-'.$i))." ".date("D", strtotime("$year-$month-$i"))." ".date("$i")." <span class='namnsdag'>$_namnsdag<span class='bday'>$bday</span></span> </p></td>";
+
+                else
+                    echo "<td><p class='dag weekday'>".date("D", strtotime("$year-$month-$i"))." ".date("$i")." <span class='namnsdag'>$_namnsdag <span class='bday'>$bday</span></span></span></p></td>";
+
+                $i++;
+                $dayYear++;    
+            };
+        };
+    echo printDay($i, $dayAmount, $year, $month, $_month, $dayYear, $today, $namnsdag);
+    ?>
+    </table>
+    <br>
+    <br><br>
+    <a href="../index.php">-Go back to main page-</a>
+</html>
